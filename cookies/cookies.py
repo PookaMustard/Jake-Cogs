@@ -55,13 +55,13 @@ class Cookies: #makes the cookies class
             else: #if one or both of you are not in the db then
                 await self.bot.say('Either you or the receiver don\'t have a account, to create a account do |createaccount') #will say you dont have a account
 
-    @cookies.command(pass_context=True)
+    @cookies.command(pass_context=True) #adds a eat command
     async def eat(self, ctx):
-        if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]:
-            self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] - 1
-            await self.bot.say('You have eaten a cookie!')
-        else:
-            await self.bot.say("fail")
+        if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]: #if you have more or = to 1 cookie then
+            self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] - 1 #it will take a cookie from you
+            await self.bot.say('You have eaten a cookie!') #and eat said cookie
+        else: #but if you dont have enough cookies
+            await self.bot.say("You don't have enough cookies!") #it will say it
 
 def setup(bot): #makes sure cog works
     bot.add_cog(Cookies(bot))
