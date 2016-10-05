@@ -16,7 +16,7 @@ class Cookies: #makes the cookies class
 
     @commands.group(no_pm=True, invoke_without_command=True) #creates cookie command group
     async def cookies(self):
-        await self.bot.say('All cookie commands are used like |cookie {subthing here} Here are a list of the subwhatevers: Createaccount, balance and give.') #gives help
+        await self.bot.say('Do |help for more info') #gives help
 
     @cookies.command(pass_context=True) #defines the create account command in the cookie subset
     async def createaccount(self, ctx):
@@ -41,7 +41,7 @@ class Cookies: #makes the cookies class
     @cookies.command(pass_context=True) #defines the give command in the cookie subset
     async def give(self, ctx, user:discord.Member=None, amount:int= None):
         if user == None: #if there is no user it will give help on how to use the command
-            await self.bot.say('Correct usage is (prefix)give @user howmany')
+            await self.bot.say('Correct usage is (prefix)cookies give @user howmany')
         else: #when if there is then
             userid = user.id #the users id of the person you give it too will be called userid
             if ctx.message.author.id in self.db[ctx.message.server.id] and userid in self.db[ctx.message.server.id]: #if they are both in db
