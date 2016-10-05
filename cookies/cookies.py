@@ -25,7 +25,7 @@ class Cookies: #makes the cookies class
         if ctx.message.author.id not in self.db[ctx.message.server.id]: #if the user isnt in the db then
             self.db[ctx.message.server.id][ctx.message.author.id] = 5 #gives them a starting balance of 5
             self.save_db() #saves db
-            await self.bot.say("You're now in the cookie database.") #says stuff
+            await self.bot.say("You're now in the :cookie: database.") #says stuff
         else:
             await self.bot.say("You can't have two accounts!") #and things
 
@@ -34,7 +34,7 @@ class Cookies: #makes the cookies class
         if user == None: #if there is no user being mentioned it will think you want to view your balance
             user = ctx.message.author #makes the user you
         if user.id in self.db[ctx.message.server.id]: #if the user is in the db
-            await self.bot.say('User {}  Has: {} cookies.'.format(user.name, str(self.db[ctx.message.server.id][user.id]))) #says how many cookies they have
+            await self.bot.say('User {}  Has: {} :cookie:\'s.'.format(user.name, str(self.db[ctx.message.server.id][user.id]))) #says how many cookies they have
         else: #else
             await self.bot.say('Create a account with |createaccount') #says you need a account
 
@@ -51,7 +51,7 @@ class Cookies: #makes the cookies class
                     await self.bot.say('Done!') #says it did it
                     self.save_db() #saves db
                 else: #however if they dont have enough cookies to give then
-                    await self.bot.say('You don\'t have enough cookies to give') #duur it says you dont hav enough cookies, dont try to give stuff you dont have hmm i might add a debt feature or cookie loans later
+                    await self.bot.say('You don\'t have enough :cookie:\'s to give') #duur it says you dont hav enough cookies, dont try to give stuff you dont have hmm i might add a debt feature or cookie loans later
             else: #if one or both of you are not in the db then
                 await self.bot.say('Either you or the receiver don\'t have a account, to create a account do |createaccount') #will say you dont have a account
 
@@ -59,9 +59,9 @@ class Cookies: #makes the cookies class
     async def eat(self, ctx):
         if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]: #if you have more or = to 1 cookie then
             self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] - 1 #it will take a cookie from you
-            await self.bot.say('You have eaten a cookie!') #and eat said cookie
+            await self.bot.say('You have eaten a :cookie:!') #and eat said cookie
         else: #but if you dont have enough cookies
-            await self.bot.say("You don't have enough cookies!") #it will say it
+            await self.bot.say("You don't have enough :cookie:'s!") #it will say it
 
 def setup(bot): #makes sure cog works
     bot.add_cog(Cookies(bot))
