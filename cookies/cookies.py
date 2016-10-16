@@ -48,8 +48,8 @@ class Cookies: #makes the cookies class
             userid = user.id #the users id of the person you give it too will be called userid
             if ctx.message.author.id in self.db[ctx.message.server.id] and userid in self.db[ctx.message.server.id]: #if they are both in db
                 if int(amount) <= self.db[ctx.message.server.id][ctx.message.author.id]: #and if the ammount you want to give you have in your balance then
-                    self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] - int(amount) #will subtract the cookies from the users account
-                    self.db[ctx.message.server.id][userid] = int(amount) + self.db[ctx.message.server.id][userid] #and will add to the reciver
+                    self.db[ctx.message.server.id][ctx.message.author.id] -= amount #will subtract the cookies from the users account
+                    self.db[ctx.message.server.id][userid] += amount #and will add to the reciver
                     await self.bot.say('Done!') #says it did it
                     self.save_db() #saves db
                 else: #however if they dont have enough cookies to give then
@@ -60,7 +60,7 @@ class Cookies: #makes the cookies class
     @cookies.command(pass_context=True) #adds a eat command
     async def eat(self, ctx):
         if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]: #if you have more or = to 1 cookie then
-            self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] - 1 #it will take a cookie from you
+            self.db[ctx.message.server.id][ctx.message.author.id] -= 1 #it will take a cookie from you
             await self.bot.say('You have eaten a :cookie:!') #and eat said cookie
         else: #but if you dont have enough cookies
             await self.bot.say("You don't have enough :cookie:'s!") #it will say it
