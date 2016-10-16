@@ -23,6 +23,8 @@ class Profile:
             self.save_db()
             return True
 
+          
+
     @commands.command(pass_context=True)
     async def profile(self, ctx, user:discord.Member=None):
         if user == None:
@@ -33,28 +35,14 @@ class Profile:
             await self.bot.say("```Name: {}\nAge: {}\nGender: {}\nLocation: {}\nDescription: {}\nRelationship status: {}```".format(self.db[id].get("name", "unset"), self.db[id].get("age", "unset"), self.db[id].get("gender", "unset"), self.db[id].get("location", "unset"), self.db[id].get("description", "unset"), self.db[id].get("relationship", "unset")))
 
     @commands.command(pass_context=True)
-    async def setprofile(self, ctx, thing:str=None, *, value:str=None):
+    async def set(self, ctx, thing:str=None, *, value:str=None):
         self.checkindb(ctx.message.author.id)
-        if not thing == None or value == None:
-            thingy = ""
-            if thing == "name":
-                thingy = "name"
-            elif thing == "age":
-                thingy = "age"
-            elif thing == "gender":
-                thingy = "gender"
-            elif thing == "location":
-                thingy = "location"
-            elif thing == "description":
-                thingy = "description"
-            elif thing == "relationship":
-                thingy = "relationship"
-            if thingy == "":
-                await self.bot.say("You need to specify a thing to set, valid things are name, gender, age, description, relationship and location")
-            else:
-                self.db[ctx.message.author.id][thingy] = value
-                self.save_db()
-                await self.bot.say("You now have set thing {} to {}".format(thingy, value))
+        if thing == name or thing == gender or thing == age or thing == description or thing == relationship or thing == location and not value == None:
+            self.db[ctx.message.author.id][thing] = value.title()
+            self.save_db()
+            await self.bot.say("You now have set  {} to {}".format(thing.capitalize(), value))
+        elif thing == None:
+            await self.bot.say("You need to specify a thing to set, valid things are name, gender, age, description, relationship and location")
 
 def setup(bot): #makes sure cog works
     bot.add_cog(Profile(bot))
