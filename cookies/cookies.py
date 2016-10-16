@@ -43,7 +43,7 @@ class Cookies: #makes the cookies class
     @cookies.command(pass_context=True) #defines the give command in the cookie subset
     async def give(self, ctx, user:discord.Member=None, amount:int= None):
         if user == None: #if there is no user it will give help on how to use the command
-            await self.bot.say('Correct usage is (prefix)cookies give @user howmany')
+            await self.bot.say('Correct usage is [prefix]cookies give <user> <amount>')
         else: #when if there is then
             userid = user.id #the users id of the person you give it too will be called userid
             if ctx.message.author.id in self.db[ctx.message.server.id] and userid in self.db[ctx.message.server.id]: #if they are both in db
@@ -55,7 +55,7 @@ class Cookies: #makes the cookies class
                 else: #however if they dont have enough cookies to give then
                     await self.bot.say('You don\'t have enough :cookie:\'s to give') #duur it says you dont hav enough cookies, dont try to give stuff you dont have hmm i might add a debt feature or cookie loans later
             else: #if one or both of you are not in the db then
-                await self.bot.say('Either you or the receiver don\'t have a account, to create a account do |createaccount') #will say you dont have a account
+                await self.bot.say('Either you or the receiver don\'t have a account, to create a account do [prefix]createaccount') #will say you dont have a account
 
     @cookies.command(pass_context=True) #adds a eat command
     async def eat(self, ctx):
@@ -69,7 +69,7 @@ class Cookies: #makes the cookies class
     @cookies.command(pass_context=True)
     async def award(self, ctx, user:discord.Member=None, amount:int=None):
         if user == None: #if there is no user it will give help on how to use the command
-            await self.bot.say('Correct usage is (prefix)award give @user howmany')
+            await self.bot.say('Correct usage is [prefix]award give <user> <amount>')
         if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
             await self.bot.say("Don't try to give cookies to yourself...")
         else:
