@@ -55,7 +55,7 @@ class Cookies: #makes the cookies class
                 else: #however if they dont have enough cookies to give then
                     await self.bot.say('You don\'t have enough :cookie:\'s to give') #duur it says you dont hav enough cookies, dont try to give stuff you dont have hmm i might add a debt feature or cookie loans later
             else: #if one or both of you are not in the db then
-                await self.bot.say('Either you or the receiver don\'t have a account, to create a account do [prefix]createaccount') #will say you dont have a account
+                await self.bot.say('Either you or the receiver don\'t have a account, to create a account do [prefix]cookies createaccount') #will say you dont have a account
 
     @cookies.command(pass_context=True) #adds a eat command
     async def eat(self, ctx):
