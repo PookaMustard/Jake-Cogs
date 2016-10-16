@@ -38,7 +38,7 @@ class Cookies: #makes the cookies class
         if user.id in self.db[ctx.message.server.id]: #if the user is in the db
             await self.bot.say('User {}  Has: {} :cookie:\'s.'.format(user.name, str(self.db[ctx.message.server.id][user.id]))) #says how many cookies they have
         else: #else
-            await self.bot.say('Create a account with |createaccount') #says you need a account
+            await self.bot.say('Create a account with [prefix]createaccount') #says you need a account
 
     @cookies.command(pass_context=True) #defines the give command in the cookie subset
     async def give(self, ctx, user:discord.Member=None, amount:int= None):
