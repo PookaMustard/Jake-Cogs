@@ -61,7 +61,7 @@ class Cookies: #makes the cookies class
                 await self.bot.say('Either you or the receiver don\'t have a account, to create a account do [prefix]cookies createaccount') #will say you dont have a account
 
     @cookies.command(pass_context=True) #adds a eat command
-    async def eat(self, ctx)
+    async def eat(self, ctx):
     """Eat one of your cookies!"""
         if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]: #if you have more or = to 1 cookie then
             self.db[ctx.message.server.id][ctx.message.author.id] -= 1 #it will take a cookie from you
