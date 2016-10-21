@@ -22,6 +22,7 @@ class Cookies: #makes the cookies class
 
     @cookies.command(pass_context=True) #defines the create account command in the cookie subset
     async def createaccount(self, ctx):
+        """Creates an account in the cookie bank!"""
         if ctx.message.server.id not in self.db:
             self.db[ctx.message.server.id] = {} #if the server isnt in db (failsafe cause when it joins a server it auto does that anyway) it will add the server
         if ctx.message.author.id not in self.db[ctx.message.server.id]: #if the user isnt in the db then
@@ -33,6 +34,7 @@ class Cookies: #makes the cookies class
 
     @cookies.command(pass_context=True) #defines the balance command in the cookies subset
     async def balance(self, ctx, *, user:discord.Member= None):
+        """Checks how many cookies you have in the cookie bank!"""
         if user == None: #if there is no user being mentioned it will think you want to view your balance
             user = ctx.message.author #makes the user you
         if user.id in self.db[ctx.message.server.id]: #if the user is in the db
@@ -42,6 +44,7 @@ class Cookies: #makes the cookies class
 
     @cookies.command(pass_context=True) #defines the give command in the cookie subset
     async def give(self, ctx, user:discord.Member=None, amount:int= None):
+        """Gives cookies to someone!"""
         if user == None: #if there is no user it will give help on how to use the command
             await self.bot.say('Correct usage is [prefix]cookies give <user> <amount>')
         else: #when if there is then
@@ -58,7 +61,8 @@ class Cookies: #makes the cookies class
                 await self.bot.say('Either you or the receiver don\'t have a account, to create a account do [prefix]cookies createaccount') #will say you dont have a account
 
     @cookies.command(pass_context=True) #adds a eat command
-    async def eat(self, ctx):
+    async def eat(self, ctx)
+    """Eat one of your cookies!"""
         if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]: #if you have more or = to 1 cookie then
             self.db[ctx.message.server.id][ctx.message.author.id] -= 1 #it will take a cookie from you
             await self.bot.say('You have eaten a :cookie:!') #and eat said cookie
