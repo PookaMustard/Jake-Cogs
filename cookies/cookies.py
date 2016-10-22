@@ -74,13 +74,13 @@ class Cookies: #makes the cookies class
     async def award(self, ctx, user:discord.Member=None, amount:int=None):
         if ctx.message.author.id == "207896356537368577" or "CookieGiver" in [r.name for r in ctx.message.author.roles]:
             if user == None: #if there is no user it will give help on how to use the command
-                await self.bot.say('Correct usage is [prefix]award <user> <amount>')
+                await self.bot.say('Correct usage is [prefix]award [user] [amount]')
             if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
                 await self.bot.say("Don't try to give cookies to yourself...")
             else:
                 userid = user.id #the users id of the person you award cookies to
                 if userid in self.db[ctx.message.server.id]: #if person is in db
-                    self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] + int(amount) #give them cookies
+                    self.db[ctx.message.server.id][userid] += amount #give them cookies
                     await self.bot.say('Done!') #says it did it
                     self.save_db() #saves db
                 else:
