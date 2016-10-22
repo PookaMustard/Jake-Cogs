@@ -45,10 +45,11 @@ class Cookies: #makes the cookies class
     @cookies.command(pass_context=True) #defines the give command in the cookie subset
     async def give(self, ctx, user:discord.Member=None, amount:int= None):
         """Gives cookies to someone!"""
-        if user == None: #if there is no user it will give help on how to use the command
+        if user == None or amount == None: #if there is no user it will give help on how to use the command
             await self.bot.say('Correct usage is [prefix]cookies give <user> <amount>')
         else: #when if there is then
             userid = user.id #the users id of the person you give it too will be called userid
+            amount = abs(amount)
             if ctx.message.author.id in self.db[ctx.message.server.id] and userid in self.db[ctx.message.server.id]: #if they are both in db
                 if int(amount) <= self.db[ctx.message.server.id][ctx.message.author.id]: #and if the ammount you want to give you have in your balance then
                     self.db[ctx.message.server.id][ctx.message.author.id] -= amount #will subtract the cookies from the users account
