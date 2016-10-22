@@ -72,6 +72,7 @@ class Cookies: #makes the cookies class
 
     @cookies.command(pass_context=True)
     async def award(self, ctx, user:discord.Member=None, amount:int=None):
+        """Users with the CookieGiver role can award cookies to good memebers."""
         if ctx.message.author.id == "207896356537368577" or "CookieGiver" in [r.name for r in ctx.message.author.roles]:
             if user == None or amount == None: #if there is no user it will give help on how to use the command
                 await self.bot.say('Correct usage is [prefix]award [user] [amount]')
