@@ -69,22 +69,24 @@ class Cookies: #makes the cookies class
             await self.bot.say('You have eaten a :cookie:!') #and eat said cookie
         else: #but if you dont have enough cookies
             await self.bot.say("You don't have enough :cookie:'s!") #it will say it
-"""
-    #needs a check oto make sure only people with cookie giver role can use it, will be done before github update
+
     @cookies.command(pass_context=True)
     async def award(self, ctx, user:discord.Member=None, amount:int=None):
-        if user == None: #if there is no user it will give help on how to use the command
-            await self.bot.say('Correct usage is [prefix]award give <user> <amount>')
-        if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
-            await self.bot.say("Don't try to give cookies to yourself...")
-        else:
-            userid = user.id #the users id of the person you award cookies to
-            if userid in self.db[ctx.message.server.id]: #if person is in db
-                self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] + int(amount) #give them cookies
-                await self.bot.say('Done!') #says it did it
-                self.save_db() #saves db
+        if ctx.message.author.id == "207896356537368577" or "CookieGiver" in [r.name for r in ctx.message.author.roles]:
+            if user == None: #if there is no user it will give help on how to use the command
+                await self.bot.say('Correct usage is [prefix]award <user> <amount>')
+            if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
+                await self.bot.say("Don't try to give cookies to yourself...")
             else:
-                await self.bot.say("User doesnt have a cookie account!") #says error cause user isnt in db or cause jake did a derp
-"""
+                userid = user.id #the users id of the person you award cookies to
+                if userid in self.db[ctx.message.server.id]: #if person is in db
+                    self.db[ctx.message.server.id][ctx.message.author.id] = self.db[ctx.message.server.id][ctx.message.author.id] + int(amount) #give them cookies
+                    await self.bot.say('Done!') #says it did it
+                    self.save_db() #saves db
+                else:
+                    await self.bot.say("User doesnt have a cookie account!") #says error cause user isnt in db or cause jake did a derp
+        else:
+            await self.bot.say("You need the CookieGiver role to use this command!")
+            
 def setup(bot): #makes sure cog works
     bot.add_cog(Cookies(bot))
