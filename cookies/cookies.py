@@ -62,7 +62,7 @@ class Cookies: #makes the cookies class
 
     @cookies.command(pass_context=True) #adds a eat command
     async def eat(self, ctx):
-    """Eat one of your cookies!"""
+        """Eat one of your cookies!""" #hexadecimal made those. (also broke those... My bad)
         if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]: #if you have more or = to 1 cookie then
             self.db[ctx.message.server.id][ctx.message.author.id] -= 1 #it will take a cookie from you
             await self.bot.say('You have eaten a :cookie:!') #and eat said cookie
