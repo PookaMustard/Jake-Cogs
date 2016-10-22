@@ -75,7 +75,7 @@ class Cookies: #makes the cookies class
         if ctx.message.author.id == "207896356537368577" or "CookieGiver" in [r.name for r in ctx.message.author.roles]:
             if user == None or amount == None: #if there is no user it will give help on how to use the command
                 await self.bot.say('Correct usage is [prefix]award [user] [amount]')
-            else
+            else:
                 if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
                     await self.bot.say("Don't try to give cookies to yourself...")
                 else:
