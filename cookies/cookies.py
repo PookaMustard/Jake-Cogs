@@ -75,17 +75,18 @@ class Cookies: #makes the cookies class
         if ctx.message.author.id == "207896356537368577" or "CookieGiver" in [r.name for r in ctx.message.author.roles]:
             if user == None or amount == None: #if there is no user it will give help on how to use the command
                 await self.bot.say('Correct usage is [prefix]award [user] [amount]')
-            if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
-                await self.bot.say("Don't try to give cookies to yourself...")
-            else:
-                amount = abs(amount)
-                userid = user.id #the users id of the person you award cookies to
-                if userid in self.db[ctx.message.server.id]: #if person is in db
-                    self.db[ctx.message.server.id][userid] += amount #give them cookies
-                    await self.bot.say('Done!') #says it did it
-                    self.save_db() #saves db
+            else
+                if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
+                    await self.bot.say("Don't try to give cookies to yourself...")
                 else:
-                    await self.bot.say("User doesnt have a cookie account!") #says error cause user isnt in db or cause jake did a derp
+                    amount = abs(amount)
+                    userid = user.id #the users id of the person you award cookies to
+                    if userid in self.db[ctx.message.server.id]: #if person is in db
+                        self.db[ctx.message.server.id][userid] += amount #give them cookies
+                        await self.bot.say('Done!') #says it did it
+                        self.save_db() #saves db
+                    else:
+                        await self.bot.say("User doesnt have a cookie account!") #says error cause user isnt in db or cause jake did a derp
         else:
             await self.bot.say("You need the CookieGiver role to use this command!")
             
