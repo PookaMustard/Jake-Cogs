@@ -1,8 +1,8 @@
 {
     "AUTHOR" : "Jake",
-    "DESCRIPTION" : "d",
+    "DESCRIPTION" : "This cog is for cookies so you can eat give recive and award cookies",
     "DISABLED" : false,
-    "INSTALL_MSG" : "Potato!",
+    "INSTALL_MSG" : "Thanks for installing cookies by Jake.",
     "NAME" : "cookies",
-    "SHORT" : "d"
+    "SHORT" : "cookies"
 }
