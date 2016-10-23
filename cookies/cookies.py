@@ -80,7 +80,6 @@ class Cookies: #makes the cookies class
                 if user.id == ctx.message.author.id: #to make sure person cant awward cookies to themself
                     await self.bot.say("Don't try to give cookies to yourself...")
                 else:
-                    amount = abs(amount)
                     userid = user.id #the users id of the person you award cookies to
                     if userid in self.db[ctx.message.server.id]: #if person is in db
                         self.db[ctx.message.server.id][userid] += amount #give them cookies
