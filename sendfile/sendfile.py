@@ -13,7 +13,7 @@ class sendfilecog:
     def __init__(self, bot):
         self.bot = bot
         
-    @checks.is_owner()    
+    @checks.is_owner()
     @commands.command(aliases=["sf", "sendf", "filesend", "fs"], pass_context=True, description="Usage: [prefix]sendfile [file] {optional message}")
     async def sendfile(self, ctx, file, optionalmessage=""):
         with open(file, 'rb') as j:
