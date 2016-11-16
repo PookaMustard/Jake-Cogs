@@ -38,9 +38,20 @@ class Profile:
     async def setprofile(self, ctx, thing:str=None, *, value:str=None):
         self.checkindb(ctx.message.author.id)
         if thing == "name" or thing == "gender" or thing == "age" or thing == "description" or thing == "relationship" or thing == "location" and not value == None:
-            self.db[ctx.message.author.id][thing] = value.title()
+            self.db[ctx.message.author.id][thing] = value
             self.save_db()
-            await self.bot.say("You now have set  {} to {}".format(thing.capitalize(), value))
+            await self.bot.say("You have set {} to '{}' for yourself.".format(thing.capitalize(), value, ))
+        elif thing == None:
+            await self.bot.say("You need to specify a thing to set, valid things are name, gender, age, description, relationship and location")
+
+    @commands.command(pass_context=True)
+    @checks.admin_or_permissions(administrator=True)
+    async def adminsetprofile(self, ctx, user:discord.Member, thing:str=None, *, value:str=None):
+        id = user.id
+        if thing == "name" or thing == "gender" or thing == "age" or thing == "description" or thing == "relationship" or thing == "location" and not value == None:
+            self.db[id][thing] = value
+            self.save_db()
+            await self.bot.say("You have set {} to '{}' for the user {}.".format(thing.capitalize(), value, user.mention))
         elif thing == None:
             await self.bot.say("You need to specify a thing to set, valid things are name, gender, age, description, relationship and location")
 
