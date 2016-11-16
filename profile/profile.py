@@ -24,8 +24,8 @@ class Profile:
             return True
 
     @commands.command(pass_context=True)
-    async def profile(self, ctx, user:discord.Member=None):
-        if user == None:
+    async def profile(self, ctx, user: discord.Member=None):
+        if user is None:
             id = ctx.message.author.id
         else:
             id = user.id
@@ -36,9 +36,9 @@ class Profile:
             await self.bot.say(messagetosend)
 
     @commands.command(pass_context=True)
-    async def setprofile(self, ctx, thing:str=None, *, value:str=None):
+    async def setprofile(self, ctx, thing: str=None, *, value: str=None):
         self.checkindb(ctx.message.author.id)
-        if thing in self.things and not value == None:
+        if thing in self.things and not value is None:
             self.db[ctx.message.author.id][thing] = value
             self.save_db()
             await self.bot.say("You have set {} to '{}' for yourself.".format(thing.capitalize(), value, ))
@@ -47,14 +47,15 @@ class Profile:
 
     @commands.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def adminsetprofile(self, ctx, user:discord.Member, thing:str=None, *, value:str=None):
+    async def adminsetprofile(self, ctx, user: discord.Member, thing: str=None, *, value: str=None):
         id = user.id
-        if thing in self.things and not value == None:
+        if thing in self.things and not value is None:
             self.db[id][thing] = value
             self.save_db()
-            await self.bot.say("You have set {} to '{}' for the user {}.".format(thing.capitalize(), value, user.mention))
-        elif thing == None:
+            await self.bot.say("Done!")
+        elif thing is None:
             await self.bot.say("You need to specify a thing to set, valid things are " + self.things )
 
-def setup(bot): #makes sure cog works
+
+def setup(bot): # makes sure cog works
     bot.add_cog(Profile(bot))
