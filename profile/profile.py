@@ -37,7 +37,7 @@ class Profile:
     @commands.command(pass_context=True)
     async def setprofile(self, ctx, thing:str=None, *, value:str=None):
         self.checkindb(ctx.message.author.id)
-        if thing == "name" or thing == "gender" or thing == "age" or or thing == "description" or thing == "relationship" or thing == "location" and not value == None:
+        if thing == "name" or thing == "gender" or thing == "age" or thing == "description" or thing == "relationship" or thing == "location" and not value == None:
             self.db[ctx.message.author.id][thing] = value.title()
             self.save_db()
             await self.bot.say("You now have set  {} to {}".format(thing.capitalize(), value))
