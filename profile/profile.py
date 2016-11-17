@@ -7,7 +7,6 @@ import cogs.utils.checks as checks
 class Profile:
     def __init__(self, bot):
         self.bot = bot
-        self.things = ['name', 'age', 'gender', 'location', 'description', 'relationship']
         try:
             self.db = dataIO.load_json("data/profiles.json")
         except FileNotFoundError:
@@ -24,39 +23,37 @@ class Profile:
             self.save_db()
             return True
 
+          
+
     @commands.command(pass_context=True)
-    async def profile(self, ctx, user: discord.Member=None):
-        if user is None:
+    async def profile(self, ctx, user:discord.Member=None):
+        if user == None:
             id = ctx.message.author.id
         else:
             id = user.id
         if self.checkindb(id):
-            messagetosend = ""
-            for thing in self.things:
-                messagetosend += "{}: {}\n".format(thing.capitialize(), self.db[id].get(thing, "Undefined"))
-            await self.bot.say(messagetosend)
+            await self.bot.say("```Name: {}\nAge: {}\nGender: {}\nLocation: {}\nDescription: {}\nRelationship status: {}```".format(self.db[id].get("name", "unset"), self.db[id].get("age", "unset"), self.db[id].get("gender", "unset"), self.db[id].get("location", "unset"), self.db[id].get("description", "unset"), self.db[id].get("relationship", "unset")))
 
     @commands.command(pass_context=True)
-    async def setprofile(self, ctx, thing: str=None, *, value: str=None):
+    async def setprofile(self, ctx, thing:str=None, *, value:str=None):
         self.checkindb(ctx.message.author.id)
-        if thing in self.things and value is not None:
+        if thing == "name" or thing == "gender" or thing == "age" or thing == "description" or thing == "relationship" or thing == "location" and not value == None:
             self.db[ctx.message.author.id][thing] = value
             self.save_db()
-            await self.bot.say("You have set {} to '{}' for yourself.".format(thing.capitalize(), value, ))
-        elif thing is None:
-            await self.bot.say("You need to specify a thing to set, valid things are" + self.things)
+            await self.bot.say("You have set {} to '{}' for yourself.".format(thing.title(), value, ))
+        elif thing == None:
+            await self.bot.say("You need to specify a thing to set, valid things are name, gender, age, description, relationship and location")
 
     @commands.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def adminsetprofile(self, ctx, user: discord.Member, thing: str=None, *, value: str=None):
+    async def adminsetprofile(self, ctx, user:discord.Member, thing:str=None, *, value:str=None):
         id = user.id
-        if thing in self.things and value is not None:
+        if thing == "name" or thing == "gender" or thing == "age" or thing == "description" or thing == "relationship" or thing == "location" and not value == None:
             self.db[id][thing] = value
             self.save_db()
-            await self.bot.say("Done!")
-        elif thing is None:
-            await self.bot.say("You need to specify a thing to set, valid things are " + self.things)
+            await self.bot.say("You have set {} to '{}' for the user {}.".format(thing.title(), value, user.mention))
+        elif thing == None:
+            await self.bot.say("You need to specify a thing to set, valid things are name, gender, age, description, relationship and location")
 
-
-def setup(bot):  # makes sure cog works
+def setup(bot): #makes sure cog works
     bot.add_cog(Profile(bot))
