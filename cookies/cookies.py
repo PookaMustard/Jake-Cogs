@@ -1,7 +1,6 @@
 from discord.ext import commands
 from cogs.utils.dataIO import dataIO
 import discord
-import cogs.utils.checks as checks
 from __main__ import send_cmd_help
 
 
@@ -63,7 +62,7 @@ class Cookies:
             else:
                 messagetosay = """Either you or the receiver don\'t have a account,
                                   to create a account do [prefix]cookies createaccount"""
-                await self.bot.say(msgtosay)
+                await self.bot.say(messagetosay)
 
     @cookies.command(pass_context=True)
     async def eat(self, ctx):
@@ -81,18 +80,19 @@ class Cookies:
             if user is None or amount is None:  # gives help
                 await self.bot.say('Correct usage is [prefix]award [user] [amount]')
             else:
-                if user.id == ctx.message.author.id: # person cant award cookies to themself
+                if user.id == ctx.message.author.id:  # person cant award cookies to themself
                     await self.bot.say("Don't try to give cookies to yourself...")
                 else:
                     userid = user.id
                     if userid in self.db[ctx.message.server.id]:
-                        self.db[ctx.message.server.id][userid] += amount # give them cookies
+                        self.db[ctx.message.server.id][userid] += amount  # give them cookies
                         await self.bot.say('Done!')
                         self.save_db()
                     else:
                         await self.bot.say("User doesnt have a cookie account!")
         else:
             await self.bot.say("You need the CookieGiver role to use this command!")
-            
+
+
 def setup(bot):
     bot.add_cog(Cookies(bot))
