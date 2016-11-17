@@ -9,11 +9,12 @@ class sendfilecog:
 
     def __init__(self, bot):
         self.bot = bot
-        self.aliases = ["sf", "sendf", "filesend", "fs"]
-        self.help = "Usage: [prefix]sendfile [file] {optional message}"
+
+    aliass = ["sf", "sendf", "filesend", "fs"]
+    help = "Usage: [prefix]sendfile [file] {optional message}"
 
     @checks.is_owner()
-    @commands.command(aliases=self.aliases, pass_context=True, description=self.help)
+    @commands.command(aliases=aliass, pass_context=True, description=help)
     async def sendfile(self, ctx, file, optionalmessage=""):
         with open(file, 'rb') as j:
             await self.bot.send_file(ctx.message.channel, fp=j, content=optionalmessage)
