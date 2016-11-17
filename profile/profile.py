@@ -3,6 +3,7 @@ from cogs.utils.dataIO import dataIO
 import discord
 import cogs.utils.checks as checks
 
+
 class Profile:
     def __init__(self, bot):
         self.bot = bot
