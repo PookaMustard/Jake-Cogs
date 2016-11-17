@@ -19,5 +19,6 @@ class sendfilecog:
         with open(file, 'rb') as j:
             await self.bot.send_file(ctx.message.channel, fp=j, content=optionalmessage)
 
+
 def setup(bot):
     bot.add_cog(sendfilecog(bot))
