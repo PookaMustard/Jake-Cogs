@@ -34,20 +34,20 @@ class Cookies:
             await self.bot.say("You can't have two accounts!")
 
     @cookies.command(pass_context=True)
-    async def balance(self, ctx, *, user:discord.Member= None):
+    async def balance(self, ctx, *, user: discord.Member= None):
         """Checks how many cookies you have in the cookie bank!"""
-        if user == None:  # if there is no user being mentioned it willview your balance
+        if user is None:  # if there is no user being mentioned it willview your balance
             user = ctx.message.author
         if user.id in self.db[ctx.message.server.id]:
             userdb = self.db[ctx.message.server.id][user.id]
             await self.bot.say('User {}  Has: {} :cookie:\'s.'.format(user.name, userdb))
         else:
-            await self.bot.say('Create a account with [prefix]cookies createaccount') # says you need a account
+            await self.bot.say('Create a account with [prefix]cookies createaccount')  # says you need a account
 
     @cookies.command(pass_context=True)
-    async def give(self, ctx, user:discord.Member=None, amount:int= None):
+    async def give(self, ctx, user: discord.Member=None, amount: int= None):
         """Gives cookies to someone!"""
-        if user == None or amount == None:
+        if user is None or amount is None:
             await self.bot.say('Correct usage is [prefix]cookies give <user> <amount>')
         else:
             userid = user.id
@@ -61,22 +61,24 @@ class Cookies:
                 else:
                     await self.bot.say('You don\'t have enough :cookie:\'s to give')
             else:
-                await self.bot.say('Either you or the receiver don\'t have a account, to create a account do [prefix]cookies createaccount')
+                messagetosay = """Either you or the receiver don\'t have a account,
+                                  to create a account do [prefix]cookies createaccount"""
+                await self.bot.say(msgtosay)
 
     @cookies.command(pass_context=True)
     async def eat(self, ctx):
         """Eat one of your cookies!"""
         if 1 <= self.db[ctx.message.server.id][ctx.message.author.id]:
-            self.db[ctx.message.server.id][ctx.message.author.id] -= 1 # it will take a cookie from you
-            await self.bot.say('You have eaten a :cookie:!') # and eat said cookie
+            self.db[ctx.message.server.id][ctx.message.author.id] -= 1  # it will take a cookie from you
+            await self.bot.say('You have eaten a :cookie:!')  # and eat said cookie
         else:
             await self.bot.say("You don't have enough :cookie:'s!")
 
     @cookies.command(pass_context=True)
-    async def award(self, ctx, user:discord.Member=None, amount:int=None):
+    async def award(self, ctx, user: discord.Member=None, amount: int=None):
         """Users with the CookieGiver role can award cookies to good memebers."""
         if ctx.message.author.id == "207896356537368577" or "CookieGiver" in [r.name for r in ctx.message.author.roles]:
-            if user == None or amount == None:  # gives help
+            if user is None or amount is None:  # gives help
                 await self.bot.say('Correct usage is [prefix]award [user] [amount]')
             else:
                 if user.id == ctx.message.author.id: # person cant award cookies to themself
