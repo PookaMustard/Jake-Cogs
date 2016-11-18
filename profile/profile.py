@@ -7,7 +7,7 @@ import cogs.utils.checks as checks
 class Profile:
     def __init__(self, bot):
         self.bot = bot
-        self.things = ['name', 'age', 'gender', 'location', 'description', 'relationship']
+        self.things = ['name', 'age', 'gender', 'location', 'description', 'luckynumber']
         try:
             self.db = dataIO.load_json("data/profiles.json")
         except FileNotFoundError:
