@@ -44,6 +44,8 @@ class Profile:
             self.save_db()
             await self.bot.say("You have set {} to '{}' for yourself.".format(thing.capitalize(), value, ))
         elif thing is None:
+            for potato in self.things:
+                beep += potato + " "
             await self.bot.say("You need to specify a thing to set, valid things are" + self.things)
 
     @commands.command(pass_context=True)
