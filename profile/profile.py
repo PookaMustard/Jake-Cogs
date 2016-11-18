@@ -34,7 +34,7 @@ class Profile:
             messagetosend = "```\n"
             for thing in self.things:
                 messagetosend += "{}: {}\n".format(thing.title(), self.db[id].get(thing, "Undefined"))
-            messagetosend += "```" 
+            messagetosend += "```"
             await self.bot.say(messagetosend)
 
     @commands.command(pass_context=True, aliases=['sp'])
