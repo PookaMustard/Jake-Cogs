@@ -7,7 +7,7 @@ import cogs.utils.checks as checks
 class Profile:
     def __init__(self, bot):
         self.bot = bot
-        self.things = ['name', 'age', 'gender', 'location', 'description', 'luckynumber']
+        self.things = ['name', 'age', 'gender', 'location', 'description', 'relationship', 'luckynumber']
         try:
             self.db = dataIO.load_json("data/profiles.json")
         except FileNotFoundError:
@@ -85,7 +85,7 @@ class Profile:
             await self.bot.say("That user doesn't have a profile.")
 
     @commands.command(pass_context=True, aliases=['sp'])
-    async def setprofile(self, ctx, thing: str=None, *, value: str=None):
+    async def setprofileglobal(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile.
 
            Currently accepted profile entries: name, age, gender, location, description, and luckynumber"""
@@ -107,7 +107,7 @@ class Profile:
             await self.bot.say("You need to specify a thing to set, valid things are " + beep + ".")
 
     @commands.command(pass_context=True, aliases=['sps'])
-    async def setprofileserver(self, ctx, thing: str=None, *, value: str=None):
+    async def setprofile(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile only on the server this is executed on.
 
            Currently accepted profile entries: name, age, gender, location, description, and luckynumber"""
