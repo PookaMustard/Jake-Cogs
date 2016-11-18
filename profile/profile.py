@@ -24,19 +24,20 @@ class Profile:
             self.save_db()
             return True
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['p'])
     async def profile(self, ctx, user: discord.Member=None):
         if user is None:
             id = ctx.message.author.id
         else:
             id = user.id
         if self.checkindb(id):
-            messagetosend = ""
+            messagetosend = "```\n"
             for thing in self.things:
                 messagetosend += "{}: {}\n".format(thing.title(), self.db[id].get(thing, "Undefined"))
+            messagetosend += "```" 
             await self.bot.say(messagetosend)
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['sp'])
     async def setprofile(self, ctx, thing: str=None, *, value: str=None):
         self.checkindb(ctx.message.author.id)
         if thing in self.things and value is not None:
