@@ -18,7 +18,7 @@ class Profile:
 
     def checkindb(self, id):
         if 'global' in self.db:
-            if id in self.db:
+            if id in self.db['global']:
                 return True
             else:
                 self.db['global'][id] = {}
@@ -51,11 +51,13 @@ class Profile:
             self.save_db()
             return True
 
-    def showprofile(self, userid, serverid):
-        if 'servers' in self.db:
-            if serverid in self.db['servers']:
-                if userid in self.db['servers'][serverid]:
-                    return self.db['servers'][serverid][userid]
+    def showprofile(self, message, userid, switch):
+        serverid = message.server.id
+        if switch:
+            if 'servers' in self.db:
+                if serverid in self.db['servers']:
+                    if userid in self.db['servers'][serverid]:
+                        return self.db['servers'][serverid][userid]
         if 'global' in self.db:
             if userid in self.db['global']:
                 return self.db['global'][userid]
@@ -70,7 +72,7 @@ class Profile:
         else:
             userid = user.id
         serverid = ctx.message.server.id
-        data = self.showprofile(userid, serverid)
+        data = self.showprofile(ctx.message, userid, True)
         if data != 0:
             messagetosend = "```\n"
             for thing in self.things:
@@ -79,6 +81,28 @@ class Profile:
                 else:
                     thingtitle = thing
                 messagetosend += "{}: {}\n".format(thingtitle.title(), data.get(thing, "Undefined"))
+            messagetosend += "```"
+            await self.bot.say(messagetosend)
+        else:
+            await self.bot.say("That user doesn't have a profile.")
+
+    @commands.command(pass_context=True, aliases=['gp'])
+    async def profileglobal(self, ctx, user: discord.Member=None):
+        """Checks for a user's or your own global profile."""
+
+        if user is None:
+            userid = ctx.message.author.id
+        else:
+            userid = user.id
+        data = self.showprofile(ctx.message, userid, False)
+        if data != 0:
+            messagetosend = "```\n"
+            for thing in self.things:
+                if thing == 'luckynumber':
+                    thingtitle = 'Lucky Number'
+                else:
+                    thingtitle = thing
+                messagetosend += "{}: {}\n".format(thingtitle.title(), self.db['global'][userid].get(thing, "Undefined"))
             messagetosend += "```"
             await self.bot.say(messagetosend)
         else:
