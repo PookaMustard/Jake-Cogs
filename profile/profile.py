@@ -7,7 +7,8 @@ import cogs.utils.checks as checks
 class Profile:
     def __init__(self, bot):
         self.bot = bot
-        self.things = ['name', 'age', 'gender', 'location', 'description', 'relationship', 'luckynumber']
+        self.things = ['name', 'age', 'gender', 'location',
+                       'description', 'relationship', 'luckynumber']
         try:
             self.db = dataIO.load_json("data/profiles.json")
         except FileNotFoundError:
@@ -71,7 +72,6 @@ class Profile:
             userid = ctx.message.author.id
         else:
             userid = user.id
-        serverid = ctx.message.server.id
         data = self.showprofile(ctx.message, userid, True)
         if data != 0:
             messagetosend = "```\n"
@@ -80,7 +80,8 @@ class Profile:
                     thingtitle = 'Lucky Number'
                 else:
                     thingtitle = thing
-                messagetosend += "{}: {}\n".format(thingtitle.title(), data.get(thing, "Undefined"))
+                messagetosend += "{}: {}\n".format(
+                    thingtitle.title(), data.get(thing, "Undefined"))
             messagetosend += "```"
             await self.bot.say(messagetosend)
         else:
@@ -102,7 +103,9 @@ class Profile:
                     thingtitle = 'Lucky Number'
                 else:
                     thingtitle = thing
-                messagetosend += "{}: {}\n".format(thingtitle.title(), self.db['global'][userid].get(thing, "Undefined"))
+                messagetosend += "{}: {}\n".format(
+                    thingtitle.title(), self.db['global'][userid].get
+                    (thing, "Undefined"))
             messagetosend += "```"
             await self.bot.say(messagetosend)
         else:
@@ -112,32 +115,40 @@ class Profile:
     async def setprofileglobal(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile.
 
-           Currently accepted profile entries: name, age, gender, location, description, and luckynumber"""
+           Currently accepted profile entries: name, age, gender,
+           location, description, and luckynumber"""
 
         if thing is None:
-            return await self.bot.say("You haven't provided me a thing to change.")
+            return await self.bot.say(
+                "You haven't provided me a thing to change.")
         thing = thing.lower()
         self.checkindb(ctx.message.author.id)
         if thing in self.things and value is not None:
             self.db['global'][ctx.message.author.id][thing] = value
             self.save_db()
-            await self.bot.say("You have set {} to '{}' for yourself.".format(thing.capitalize(), value, ))
+            await self.bot.say(
+                "You have set {} to '{}' for yourself.".format(
+                    thing.capitalize(), value, ))
         else:
             beep = ""
             for index, potato in enumerate(self.things):
                 beep += potato
                 if index != len(self.things) - 1:
                     beep += ", "
-            await self.bot.say("You need to specify a thing to set, valid things are " + beep + ".")
+            await self.bot.say(
+                "You need to specify a thing to set, valid things are "
+                + beep + ".")
 
     @commands.command(pass_context=True, aliases=['sps'])
     async def setprofile(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile only on the server this is executed on.
 
-           Currently accepted profile entries: name, age, gender, location, description, and luckynumber"""
+           Currently accepted profile entries: name, age, gender, location,
+           description, and luckynumber"""
 
         if thing is None:
-            return await self.bot.say("You haven't provided me a thing to change.")
+            return await self.bot.say(
+                "You haven't provided me a thing to change.")
         thing = thing.lower()
         userid = ctx.message.author.id
         serverid = ctx.message.server.id
@@ -145,24 +156,31 @@ class Profile:
         if thing in self.things and value is not None:
             self.db['servers'][serverid][userid][thing] = value
             self.save_db()
-            await self.bot.say("You have set {} to '{}' for yourself.".format(thing.capitalize(), value, ))
+            await self.bot.say(
+                "You have set {} to '{}' for yourself.".format(
+                    thing.capitalize(), value, ))
         else:
             beep = ""
             for index, potato in enumerate(self.things):
                 beep += potato
                 if index != len(self.things) - 1:
                     beep += ", "
-            await self.bot.say("You need to specify a thing to set, valid things are " + beep + ".")
+            await self.bot.say(
+                "You need to specify a thing to set, valid things are "
+                + beep + ".")
 
     @commands.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def adminsetprofile(self, ctx, user: discord.Member, thing: str=None, *, value: str=None):
+    async def adminsetprofile(self, ctx, user: discord.Member,
+                              thing: str=None, *, value: str=None):
         """Changes your own or another user's profile. Administrators only.
 
-           Currently accepted profile entries: name, age, gender, location, description, and luckynumber"""
+           Currently accepted profile entries: name, age, gender, location,
+           description, and luckynumber"""
 
         if thing is None:
-            return await self.bot.say("You haven't provided me a thing to change.")
+            return await self.bot.say(
+                "You haven't provided me a thing to change.")
         thing = thing.lower()
         userid = user.id
         serverid = ctx.message.server.id
@@ -170,14 +188,18 @@ class Profile:
         if thing in self.things and value is not None:
             self.db['servers'][serverid][userid][thing] = value
             self.save_db()
-            await self.bot.say("You have set {} to '{}' for the user {}.".format(thing.capitalize(), value, user.mention, ))
+            await self.bot.say(
+                "You have set {} to '{}' for the user {}.".format(
+                    thing.capitalize(), value, user.mention, ))
         else:
             beep = ""
             for index, potato in enumerate(self.things):
                 beep += potato
                 if index != len(self.things) - 1:
                     beep += ", "
-            await self.bot.say("You need to specify a thing to set, valid things are " + beep + ".")
+            await self.bot.say(
+                "You need to specify a thing to set, valid things are "
+                + beep + ".")
 
 
 def setup(bot):  # makes sure cog works
