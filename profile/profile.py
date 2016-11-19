@@ -87,7 +87,7 @@ class Profile:
         else:
             await self.bot.say("That user doesn't have a profile.")
 
-    @commands.command(pass_context=True, aliases=['gp'])
+    @commands.command(pass_context=True, aliases=['gp', 'pg'])
     async def profileglobal(self, ctx, user: discord.Member=None):
         """Checks for a user's or your own global profile."""
 
@@ -111,7 +111,7 @@ class Profile:
         else:
             await self.bot.say("That user doesn't have a profile.")
 
-    @commands.command(pass_context=True, aliases=['sp'])
+    @commands.command(pass_context=True, aliases=['spg', 'sg'])
     async def setprofileglobal(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile.
 
@@ -139,7 +139,7 @@ class Profile:
                 "You need to specify a thing to set, valid things are "
                 + beep + ".")
 
-    @commands.command(pass_context=True, aliases=['sps'])
+    @commands.command(pass_context=True, aliases=['sp'])
     async def setprofile(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile only on the server this is executed on.
 
