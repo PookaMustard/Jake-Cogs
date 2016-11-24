@@ -5,6 +5,7 @@ import cogs.utils.checks as checks
 
 
 class Profile:
+
     def __init__(self, bot):
         self.bot = bot
         self.things = ['name', 'age', 'gender', 'location',
@@ -53,16 +54,33 @@ class Profile:
             return True
 
     def showprofile(self, message, userid, switch):
+        item = ''
+        itemslist = {}
         serverid = message.server.id
         if switch:
             if 'servers' in self.db:
                 if serverid in self.db['servers']:
                     if userid in self.db['servers'][serverid]:
-                        return self.db['servers'][serverid][userid]
+                        for a in self.things:
+                            if a not in self.db['servers'][serverid][userid]:
+                                item = self.getglobalitem(userid, a)
+                                itemslist[a] = item
+                            else:
+                                itemslist[a] = self.db['servers'][
+                                    serverid][userid][a]
+                        return itemslist, False
         if 'global' in self.db:
             if userid in self.db['global']:
-                return self.db['global'][userid]
-        return 0
+                return self.db['global'][userid], True
+        return 0, False
+
+    def getglobalitem(self, userid, a):
+        if 'global' in self.db:
+            if userid in self.db['global']:
+                if a in self.db['global'][userid]:
+                    b = str(self.db['global'][userid][a]) + " (Global)"
+                    return b
+        return 'Undefined'
 
     @commands.command(pass_context=True, aliases=['p'])
     async def profile(self, ctx, user: discord.Member=None):
@@ -72,9 +90,12 @@ class Profile:
             userid = ctx.message.author.id
         else:
             userid = user.id
-        data = self.showprofile(ctx.message, userid, True)
+        data, globalch = self.showprofile(ctx.message, userid, True)
         if data != 0:
-            messagetosend = "```\n"
+            if globalch:
+                messagetosend = "(Derived from global profile)\n```\n"
+            else:
+                messagetosend = "```\n"
             for thing in self.things:
                 if thing == 'luckynumber':
                     thingtitle = 'Lucky Number'
@@ -111,6 +132,94 @@ class Profile:
         else:
             await self.bot.say("That user doesn't have a profile.")
 
+    @commands.command(pass_context=True)
+    async def clearprofile(self, ctx, thing: str=None):
+        """Clears a server profile entry or the entire server profile.
+        Leaving the thing parameter blank will CLEAR YOUR ENTIRE PROFILE,
+        be careful."""
+
+        userid = ctx.message.author.id
+        serverid = ctx.message.server.id
+        if 'servers' in self.db:
+            if serverid in self.db['servers']:
+                if userid in self.db['servers'][serverid]:
+                    if thing is None:
+                        await self.bot.say("Are you sure you want to " +
+                                           "clear your entire server " +
+                                           "profile? Say `Delete " +
+                                           "profile` to confirm.")
+                        rp = await self.bot.wait_for_message(
+                           author=ctx.message.author)
+                        if rp.content.lower() == 'delete profile':
+                            del self.db['servers'][serverid][userid]
+                            self.save_db()
+                            await self.bot.say(
+                                "Your entire server profile has been deleted.")
+                        else:
+                            return await self.bot.say("Operation cancelled.")
+                    elif thing not in self.things:
+                        return await self.bot.say("No such entry to delete.")
+                    else:
+                        thingcheck = thing
+                        if thingcheck == 'luckynumber':
+                            thingcheck = 'lucky number'
+                        if thing not in self.db['servers'][serverid][userid]:
+                            return await self.bot.say(
+                                "Your server profile does not have a {} " +
+                                "entry to delete.".format(thingcheck))
+                        if len(self.db['servers'][serverid][userid]) == 1:
+                            del self.db['servers'][serverid][userid]
+                        else:
+                            del self.db['servers'][serverid][userid][thing]
+                        await self.bot.say(
+                            "Your server profile's {} " +
+                            "has been deleted.".format(
+                                thingcheck))
+                        self.save_db()
+                    return
+        return await self.bot.say("You do not have a profile on this server.")
+
+    @commands.command(pass_context=True)
+    async def clearprofileglobal(self, ctx, thing: str=None):
+        """Clears a global profile entry or the entire global profile.
+        Leaving the thing parameter blank will CLEAR YOUR ENTIRE PROFILE,
+        be careful."""
+
+        userid = ctx.message.author.id
+        if 'global' in self.db:
+            if userid in self.db['global']:
+                if thing is None:
+                    await self.bot.say(
+                        "Are you sure you want to clear your entire " +
+                        "global profile? Say `Delete profile` to confirm.")
+                    rp = await self.bot.wait_for_message(
+                                                author=ctx.message.author)
+                    if rp.content.lower() == 'delete profile':
+                        del self.db['global'][userid]
+                        await self.bot.say(
+                            "Your entire global profile has been deleted.")
+                    else:
+                        return await self.bot.say("Operation cancelled.")
+                elif thing not in self.things:
+                    return await self.bot.say("No such entry to delete.")
+                else:
+                    thingcheck = thing
+                    if thingcheck == 'luckynumber':
+                        thingcheck = 'lucky number'
+                    if thing not in self.db['global'][userid]:
+                        return await self.bot.say(
+                            "Your global profile does not " +
+                            "have a {} entry to delete.".format(thingcheck))
+                    del self.db['global'][userid][thing]
+                    if len(self.db['global'][userid]) == 0:
+                        del self.db['global'][userid]
+                    await self.bot.say(
+                        "Your global profile's {} has been deleted. \
+                        ".format(thingcheck))
+                self.save_db()
+                return
+        return await self.bot.say("You do not have a global profile.")
+
     @commands.command(pass_context=True, aliases=['spg', 'sg'])
     async def setprofileglobal(self, ctx, thing: str=None, *, value: str=None):
         """Changes your own profile.
@@ -136,8 +245,8 @@ class Profile:
                 if index != len(self.things) - 1:
                     beep += ", "
             await self.bot.say(
-                "You need to specify a thing to set, valid things are "
-                + beep + ".")
+                "You need to specify a thing to set, valid things are " +
+                beep + ".")
 
     @commands.command(pass_context=True, aliases=['sp'])
     async def setprofile(self, ctx, thing: str=None, *, value: str=None):
@@ -152,8 +261,10 @@ class Profile:
         thing = thing.lower()
         userid = ctx.message.author.id
         serverid = ctx.message.server.id
+        if value is None:
+            return await self.bot.say("No value given.")
         self.checkindbserver(userid, serverid)
-        if thing in self.things and value is not None:
+        if thing in self.things:
             self.db['servers'][serverid][userid][thing] = value
             self.save_db()
             await self.bot.say(
@@ -166,8 +277,8 @@ class Profile:
                 if index != len(self.things) - 1:
                     beep += ", "
             await self.bot.say(
-                "You need to specify a thing to set, valid things are "
-                + beep + ".")
+                "You need to specify a thing to set, valid things are " +
+                beep + ".")
 
     @commands.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
@@ -184,6 +295,8 @@ class Profile:
         thing = thing.lower()
         userid = user.id
         serverid = ctx.message.server.id
+        if value is None:
+            return await self.bot.say("No value given.")
         self.checkindbserver(userid, serverid)
         if thing in self.things and value is not None:
             self.db['servers'][serverid][userid][thing] = value
@@ -198,8 +311,8 @@ class Profile:
                 if index != len(self.things) - 1:
                     beep += ", "
             await self.bot.say(
-                "You need to specify a thing to set, valid things are "
-                + beep + ".")
+                "You need to specify a thing to set, valid things are " +
+                beep + ".")
 
 
 def setup(bot):  # makes sure cog works
